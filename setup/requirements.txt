@@ -1,0 +1,31 @@
+gevent==22.10.1
+pycryptodome
+tqdm
+playwright
+#
+# gevent
+requests
+
+SQLAlchemy
+
+timestring
+
+
+# pymem
+# pyautogui
+eel
+
+# pytesseract
+Pillow
+
+wmi
+psutil
+pyautoit
+pynput
+# aes-everywhere
+# ahk
+# ahk[binary]
+# python-telegram-bot
+# numpy
+# pywebview
+# cefpython3

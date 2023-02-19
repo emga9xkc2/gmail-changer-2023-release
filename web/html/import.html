@@ -1,0 +1,37 @@
+<div id="import" class="w3-container tabs" style="display:none">
+    <br>
+    <div class="w3-row">
+        <textarea id="iaccount" rows="15" style="width: 100%; resize: none;border: 1px solid #ccc;"
+            placeholder="Nhập đường dẫn file hoặc danh sách account"></textarea>
+
+    </div>
+
+    <br>
+    <input type="file" id="ifile">
+    <button onclick="oimport()" class="w3-button w3-teal w3-right">Import</button>
+    <br>
+    <br>
+    <br>
+
+    <div id="saveSettingStatus"></div>
+</div>
+
+<script>
+
+    function oimport() {
+        var iaccount = getValue("#iaccount");
+        eel.oimport(iaccount)(function (callback) {
+            var msg = callback.msg;
+
+
+            setHtmlCssSelector(
+                "#saveSettingStatus",
+                `<div class="w3-panel w3-pale-green w3-bottombar w3-border-green w3-border">
+                    <h3>Kích hoạt tài khoản thành công</h3>
+                    <p>${msg}</p>
+                </div>`
+            );
+            console.log(callback);
+        });
+    }
+</script>

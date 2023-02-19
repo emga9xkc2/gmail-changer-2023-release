@@ -1,0 +1,320 @@
+<div id="home" class="w3-container tabs">
+    <br>
+    <!-- <button onclick="updateMails()" class="w3-button w3-teal w3-right">Cập nhật danh sách mail</button> -->
+    <table class="w3-table-all" id="tableMails">
+    </table>
+    <!-- <div id="load_page"> -->
+    <div id="app" class="container">
+        <ul class="page">
+            <li class="page__btn" id="back_page"><span class="material-icons">chevron_left</span></li>
+            <li class="page__numbers">1</li>
+            <li class="page__numbers">2</li>
+            <li class="page__numbers">3</li>
+            <li class="page__numbers">4</li>
+            <li class="page__numbers">5</li>
+            <li class="page__numbers">6</li>
+            <li class="page__numbers">7</li>
+            <li class="page__numbers">8</li>
+            <li class="page__numbers">9</li>
+            <li class="page__numbers">10</li>
+            <li class="page__btn" id="next_page"><span class="material-icons">chevron_right</span></li>
+        </ul>
+    </div>
+    <!-- </div> -->
+
+
+</div>
+<script>
+
+    function pagination(c, m) {
+        var current = c,
+            last = m,
+            delta = 2,
+            left = current - delta,
+            right = current + delta + 1,
+            range = [],
+            rangeWithDots = [],
+            l;
+
+        for (let i = 1; i <= last; i++) {
+            if (i == 1 || i == last || (i >= left && i < right)) {
+                range.push(i);
+            }
+        }
+
+        for (let i of range) {
+            if (l) {
+                if (i - l === 2) {
+                    rangeWithDots.push(l + 1);
+                } else if (i - l !== 1) {
+                    rangeWithDots.push("...");
+                }
+            }
+            rangeWithDots.push(i);
+            l = i;
+        }
+        return rangeWithDots;
+    }
+    function generateHTML(currentPage, totalPages) {
+        currentPage = parseInt(currentPage);
+        var html = '<ul class="page">';
+        html +=
+            '<li class="page__btn" id="back_page"><span class="material-icons">chevron_left</span></li>';
+
+        var paginationArray = pagination(currentPage, totalPages);
+        for (var i = 0; i < paginationArray.length; i++) {
+            var pageNumber = paginationArray[i];
+            if (pageNumber === "...") {
+                html += '<li class="page__dots">...</li>';
+            } else {
+                html += '<li class="page__numbers">' + pageNumber + "</li>";
+            }
+        }
+
+        html +=
+            '<li class="page__btn" id="next_page"><span class="material-icons">chevron_right</span></li>';
+        html += "</ul>";
+
+        return html;
+    }
+    var currentPageNum = 1;
+    function loadPage() {
+        return new Promise((resolve, reject) => {
+            eel.get_count_mail()(function (callback) {
+                currentPageNum = parseInt(currentPageNum);
+                // console.log(callback);
+                var count_item = callback.msg;
+                // alert(count_item);
+                var html = generateHTML(currentPageNum, count_item);
+                setHtmlCssSelector("#load_page", html);
+                resolve();
+            });
+        });
+    }
+    function loadTableMails() {
+        return new Promise((resolve, reject) => {
+            const table = document.getElementById("tableMails");
+
+            table.addEventListener("contextmenu", function (event) {
+                event.preventDefault();
+                let selectedData;
+
+                if (event.target.nodeName === "TD") {
+                    const el = document.getElementsByName("menus");
+                    if (el.length > 0) {
+                        el[0].remove();
+                    }
+
+                    const innerHTML = event.target.innerHTML;
+                    const colIndex = event.target.cellIndex;
+                    const rowIndex = event.target.parentNode.rowIndex;
+                    row = table.rows[rowIndex];
+                    // console.log(row.innerHTML);
+                    selectedData = row.innerHTML;
+
+                    // Tạo menu chuột phải
+                    const menu = document.createElement("div");
+                    menu.setAttribute("name", "menus");
+
+                    menu.style.position = "fixed";
+                    menu.style.backgroundColor = "white";
+                    menu.style.top = `${event.clientY}px`;
+                    menu.style.left = `${event.clientX}px`;
+                    menu.style.boxShadow = "0px 0px 10px gray";
+                    menu.style.padding = "10px";
+                    menu.innerHTML = `
+                <div class="menu-item" id="select-item">Chọn</div>
+                <div class="menu-item" id="deselect-item">Bỏ chọn</div>
+    <div class="menu-item" id="copy-item">Sao chép</div>
+    <div class="menu-item" id="selectall-item">Chọn tất cả</div>
+    <div class="menu-item" id="deselectall-item">Bỏ chọn tất cả</div>
+    <div class="menu-item" id="runall-item">Chạy các mail đã chọn</div>
+    `;
+
+                    document.body.appendChild(menu);
+                    const checkbox = row.querySelector("input[type='checkbox']");
+                    const checked = checkbox.checked;
+                    if (checked) {
+                        $("#select-item").css("display", "none");
+                    } else {
+                        $("#deselect-item").css("display", "none");
+                    }
+                    // Thêm sự kiện cho menu sao chép
+                    $("#copy-item").bind("click", function () {
+                        navigator.clipboard.writeText(selectedData);
+                        menu.remove();
+                    });
+                    $("#runall-item").bind("click", function () {
+                        if (selected.length == 0) {
+                            msgBox("Hãy chọn những mail cần chạy trước");
+                            return;
+                        }
+                        eel.runAccounts(selected)();
+                    });
+                    // Thêm sự kiện cho menu xóa
+                    // document
+                    //     .getElementById("delete-item")
+                    //     .addEventListener("click", function () {
+                    //         row.remove();
+                    //         menu.remove();
+                    //     });
+                    $("#select-item").bind("click", function () {
+                        const checkbox = row.querySelector(
+                            "input[type='checkbox']"
+                        );
+                        checkbox.checked = true;
+                        selectedPush(checkbox.value);
+                    });
+                    $("#deselect-item").bind("click", function () {
+                        const checkbox = row.querySelector(
+                            "input[type='checkbox']"
+                        );
+                        checkbox.checked = false;
+                        selectedRemove(checkbox.value);
+                    });
+                    $("#selectall-item").bind("click", function () {
+                        eel.selectMails()(function (callback) {
+                            var msg = callback.msg
+                            selected.concat(msg);
+                            console.log(selected)
+                        })
+                        // checkboxes = document.getElementsByName("mails");
+                        // for (var i = 0, n = checkboxes.length; i < n; i++) {
+                        //     checkboxes[i].checked = true;
+                        //     value = checkboxes[i].value;
+                        //     selectedPush(value);
+                        // }
+                    });
+
+                    $("#deselectall-item").bind("click", function () {
+                        checkboxes = document.getElementsByName("mails");
+                        for (var i = 0, n = checkboxes.length; i < n; i++) {
+                            checkboxes[i].checked = false;
+                            value = checkboxes[i].value;
+                            selectedRemove(value);
+                        }
+                    });
+                    addEventListener("click", (event) => {
+                        menu.remove();
+                    });
+                    // Thêm hiệu ứng đổi màu khi di chuột vào menu
+                    const menuItems = document.querySelectorAll(".menu-item");
+                    menuItems.forEach(function (item) {
+                        item.addEventListener("mouseover", function () {
+                            item.style.color = "white";
+                            item.style.backgroundColor = "green";
+                        });
+                        item.addEventListener("mouseout", function () {
+                            item.style.backgroundColor = "white";
+                            item.style.color = "black";
+                        });
+                    });
+                }
+            });
+            resolve();
+        });
+    }
+
+    function updateMails(numberPage) {
+        currentPage = numberPage;
+
+        const limit = 15;
+        const skip = (numberPage - 1) * limit;
+        eel.get_mails(
+            skip,
+            limit
+        )(function (callback) {
+            // console.log(callback);
+            var success = callback.success;
+
+            var msg = callback.msg;
+            var thead = `<thead><tr class="w3-light-grey w3-hover-red"><th></th><th>ID</th><th>Email | Password | Recovery</th><th>Status</th></tr></thead>`;
+            var tr = "";
+            var i = 0;
+            for (const element of msg) {
+                i = i + 1;
+                thead =
+                    thead +
+                    `<tr class="w3-hover-green">
+                    <td><input type="checkbox" name="mails" value="${element.id}"></input></td>
+                    <td>${i}</td>
+                    <td><input type="text"  value="${element.email} | ${element.password} | ${element.emailrecovery}"></td>
+                    <td><input type="text"  value="${element.status}"></td>
+                </tr>`;
+                // console.log(element);
+            }
+            setHtmlCssSelector("#tableMails", thead);
+            const checkboxes = document.querySelectorAll("input[name='mails']");
+            checkboxes.forEach(function (checkbox) {
+                if (selected.includes(checkbox.value)) {
+                    checkbox.checked = true;
+                }
+                // console.log(checkbox);
+                checkbox.addEventListener("change", function () {
+                    if (this.checked) {
+                        selectedPush(this.value);
+                    } else {
+                        selectedRemove(this.value);
+                    }
+                });
+            });
+        });
+    }
+
+    function clickPage() {
+        return new Promise((resolve, reject) => {
+            $("#back_page").click(function () {
+                var currentPage = document.querySelector(".page__numbers.active");
+                var nextPage = currentPage.previousElementSibling;
+                if (nextPage && nextPage.classList.contains("page__numbers")) {
+                    nextPage.classList.add("active");
+                    currentPage.classList.remove("active");
+                    const numPage = nextPage.textContent;
+                    updateMails(numPage);
+                }
+            });
+
+            $("#next_page").click(function () {
+                var currentPage = document.querySelector(".page__numbers.active");
+                var nextPage = currentPage.nextElementSibling;
+                if (nextPage && nextPage.classList.contains("page__numbers")) {
+                    nextPage.classList.add("active");
+                    currentPage.classList.remove("active");
+                    const numPage = nextPage.textContent;
+
+                    updateMails(numPage);
+                }
+            });
+            $(".page__numbers").click(function () {
+                // alert("page__numbers");
+                // Bỏ tất cả class "active"
+                $(".page__numbers").removeClass("active");
+                // Thêm class "active" cho phần tử đang được click
+                $(this).addClass("active");
+                const numPage = $(this).text();
+                // generateHTML(numPage, 10);
+                // alert(numPage);
+                // var html = generateHTML(numPage, 10);
+                // setHtmlCssSelector("#app", html);
+                updateMails(numPage);
+                // clickPage();
+            });
+            $(".page__numbers")[0].click();
+            resolve();
+        });
+    }
+    var selected = [];
+    function selectedPush(value) {
+        if (selected.includes(value)) {
+            return;
+        }
+        selected.push(value);
+    }
+    function selectedRemove(value) {
+        selected = selected.filter((val) => val !== value);
+    }
+    loadPage()
+    loadTableMails()
+    clickPage()
+
+</script>

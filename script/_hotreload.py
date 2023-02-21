@@ -13,16 +13,40 @@ from hplaywrightExtended import ExtendedLocator, ExtendedPage
 # def function1(self: Gmail):
 def function1(self):
     p: ExtendedPage = self.p
+    p = self.p
     url = p.url
-    newPwd = p.locatorName("password")
-    newRePwd = p.locatorName("confirmation_password")
-    if newPwd.isDisplayed() and newRePwd.isDisplayed():
-        newPwd.type("hxjyVNwOTPPH1")
-        newRePwd.type("hxjyVNwOTPPH1", press="Enter")
-        newRePwd.waitHidden()
-        print("abc")
-    if url.startswith("https://myaccount.google.com/security-checkup-welcome"):
-        return "ok"
+    if not "https://myaccount.google.com/language" in url:
+        p.goto("https://myaccount.google.com/language?hl=en&utm_source=google-account&utm_medium=web&pli=1")
+    timestart = time.time()
+    while time.time() - timestart < 2:
+        try:
+            url = p.url
+            text = p.locatorSelector(".xsr7od").text()
+            if "United States" in text:
+                return "ok"
+            displaylang = False
+            enterlang = p.locatorAriaLabel("English")
+            if enterlang.isDisplayed():
+                displaylang = True
+                enterlang.click()
+            enterlang = p.locatorAriaLabel("United States")
+            if enterlang.isDisplayed():
+                displaylang = True
+                enterlang.click()
+            select = p.locatorText('Select')
+            if select.displayed():
+                select.click()
+
+            if not displaylang:
+                edits = p.locatorSelector("span[class=VfPpkd-kBDsod]").findLocatorDisplay()
+                if edits:
+                    edits.click(force = True)
+
+
+        except Exception as e:
+            print(e)
+        time.sleep(1)
+    return "Timeout"
 
 
 

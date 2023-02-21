@@ -44,9 +44,10 @@ class Database:
 #         db.close()
 
 class Result:
-    def __init__(self, success=True, msg="Success", exception=""):
+    def __init__(self, success=True, msg="Success", data="", exception=""):
         self.success = success
         self.msg = msg
+        self.data = data
         self.exception = None
         if exception:
             self.exception = exception
@@ -54,6 +55,7 @@ class Result:
         dic = dict()
         dic["success"] = self.success
         dic["msg"] = self.msg
+        dic["data"] = self.data
         if self.exception:
             dic["exception"] = self.exception
         return dic
@@ -92,6 +94,7 @@ class mailTable(Base):
     chplay = Column(String, index=True, nullable=True)
     paymentmethod = Column(String, index=True, nullable=True)
     googlevoice = Column(String, index=True, nullable=True)
+    language = Column(String, index=True, nullable=True)
     proxy = Column(String, index=True, nullable=True)
     proxylist = Column(String, index=True, nullable=True)
     phonehide = Column(String, index=True, nullable=True)

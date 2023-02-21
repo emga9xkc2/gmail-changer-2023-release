@@ -12,10 +12,10 @@ timestring
 
 
 # pymem
-# pyautogui
+pyautogui
 eel
 
-# pytesseract
+pytesseract
 Pillow
 
 wmi
@@ -26,6 +26,7 @@ pynput
 # ahk
 # ahk[binary]
 # python-telegram-bot
-# numpy
+
+numpy
 # pywebview
 # cefpython3

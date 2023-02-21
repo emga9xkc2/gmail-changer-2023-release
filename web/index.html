@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="style.css">
     <!-- Boxiocns CDN Link -->
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <script src="/static/jquery-1.12.4.min.js"></script>
@@ -83,6 +84,15 @@
                     <li><a class="link_name" href="#">Setting</a></li>
                 </ul>
             </li>
+            <li onclick="openMenu(event, 'logs');" class="tablink">
+                <a href="#">
+                    <i class='bx bx-navigation'></i>
+                    <span class="link_name">Logs</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="#">Logs</a></li>
+                </ul>
+            </li>
             <li class="logout tablink" onclick="eel.quit()()">
                 <a href="#">
                     <i class='bx bx-log-out'></i>
@@ -102,9 +112,10 @@
         </div>
 
         <div id="load-import"></div>
-        <div id="load-home"></div>
+        <div id="load-dashboard"></div>
         <!-- <div id="load-caidat"></div> -->
-        <div id="load-chucnang"></div>
+        <div id="load-setting"></div>
+        <div id="load-logs"></div>
 
 
     </section>

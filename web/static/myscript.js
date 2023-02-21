@@ -34,6 +34,22 @@ function includeHTML() {
         }
     }
 }
+function strToBool(myValue) {
+    return String(myValue).toLowerCase() === "true";
+}
+function toastError(x) {
+    toastr.error(x);
+}
+function toastSuccess(x) {
+    toastr.success(x);
+}
+function toastWarning(x) {
+    toastr.warning(x);
+}
+function toastInfo(x) {
+    toastr.info(x);
+}
+
 function reloadUrl() {
     location.reload();
 }

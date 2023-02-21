@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    loadHome().then(loadImport).then(loadChucNang);
+    loadDashboard().then(loadImport).then(loadSetting).then(loadLogs);
     $.getScript("/codinglab.js", function () {
         // Code để gọi hàm hoặc xử lý dữ liệu tại đây
     });
@@ -20,12 +20,12 @@ function loadSidebarHtml() {
         });
     });
 }
-function loadHome() {
+function loadDashboard() {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: "html/home.html",
+            url: "html/dashboard.html",
             success: function (result) {
-                $("#load-home").html(result);
+                $("#load-dashboard").html(result);
                 resolve();
             },
             error: function (error) {
@@ -48,12 +48,26 @@ function loadImport() {
         });
     });
 }
-function loadChucNang() {
+function loadSetting() {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: "html/chucnang.html",
+            url: "html/setting.html",
             success: function (result) {
-                $("#load-chucnang").html(result);
+                $("#load-setting").html(result);
+                resolve();
+            },
+            error: function (error) {
+                reject(error);
+            },
+        });
+    });
+}
+function loadLogs() {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: "html/logs.html",
+            success: function (result) {
+                $("#load-logs").html(result);
                 resolve();
             },
             error: function (error) {

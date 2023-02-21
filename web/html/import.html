@@ -21,13 +21,13 @@
     function oimport() {
         var iaccount = getValue("#iaccount");
         eel.oimport(iaccount)(function (callback) {
-            var msg = callback.msg;
+            var msg = callback.data;
 
 
             setHtmlCssSelector(
                 "#saveSettingStatus",
                 `<div class="w3-panel w3-pale-green w3-bottombar w3-border-green w3-border">
-                    <h3>Kích hoạt tài khoản thành công</h3>
+                    <h3>Upload mail thành công</h3>
                     <p>${msg}</p>
                 </div>`
             );

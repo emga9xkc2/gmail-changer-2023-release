@@ -267,8 +267,10 @@ if not os.path.exists(scriptPathAppend):
 def setupPythonPath(title):
     filename = "main.pyc"
     filename = hfile.fixFileName(filename)
-
-    createShortcut(title.split("_")[0].strip().upper() + ".lnk", r"C:\Windows\py.exe", "", '"' + filename + '"', "/web/static/favico.ico")
+    if not hfile.checkExists(filename):
+        filename = "main.py"
+        filename = hfile.fixFileName(filename)
+    createShortcut(title.split("_")[0].strip().upper() + ".lnk", r"C:\Windows\py.exe", "", '"' + filename + '"', "web/static/favicon.ico")
 
 
 

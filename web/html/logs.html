@@ -4,15 +4,3 @@
         <textarea id="nhatkyhoatdong" rows="15" style="width: 100%; resize: none;border: 1px solid #ccc;"
             placeholder="Logs"></textarea>
     </div>
-
-    <script>
-        eel.expose(pythonToJS);
-        function pythonToJS(x) {
-            const txtArea = document.getElementById("nhatkyhoatdong");
-            txtArea.value = x + "\r\n" + txtArea.value;
-        }
-        eel.expose(toastError);
-
-
-
-    </script>

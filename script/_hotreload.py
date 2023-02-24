@@ -13,36 +13,35 @@ from hplaywrightExtended import ExtendedLocator, ExtendedPage
 # def function1(self: Gmail):
 def function1(self):
     p: ExtendedPage = self.p
+    emailtest = self.emailrecovery
+    if not "@" in emailtest:
+        emailtest = self.user
+    if not "@" in emailtest:
+        emailtest = self.user + "@gmail.com"
+    dau = emailtest.split("@")[0]
+    duoi = "hotmail.com"
+    newemailrecovery = dau + "1@" + duoi
     p = self.p
     url = p.url
-    if not "https://myaccount.google.com/language" in url:
-        p.goto("https://myaccount.google.com/language?hl=en&utm_source=google-account&utm_medium=web&pli=1")
+    if not url.startswith("https://myaccount.google.com/recovery/email"):
+        p.goto("https://myaccount.google.com/recovery/email?hl=en&rapt=" + self.rapt)
     timestart = time.time()
-    while time.time() - timestart < 2:
+    while time.time() - timestart < 60:
         try:
             url = p.url
-            text = p.locatorSelector(".xsr7od").text()
-            if "United States" in text:
+            if url.startswith("https://myaccount.google.com/recovery/email"):
+                pass
+
+            # url = p.url
+            verifiCode = p.locatorSelector('*[maxlength="6"]')
+            if verifiCode.first.is_visible(timeout=1000):
                 return "ok"
-            displaylang = False
-            enterlang = p.locatorAriaLabel("English")
-            if enterlang.isDisplayed():
-                displaylang = True
-                enterlang.click()
-            enterlang = p.locatorAriaLabel("United States")
-            if enterlang.isDisplayed():
-                displaylang = True
-                enterlang.click()
-            select = p.locatorText('Select')
-            if select.displayed():
-                select.click()
-
-            if not displaylang:
-                edits = p.locatorSelector("span[class=VfPpkd-kBDsod]").findLocatorDisplay()
-                if edits:
-                    edits.click(force = True)
-
-
+            newEmail = p.locatorSelector('*[type="email"]')
+            if newEmail.displayed():
+                self.data["emailrecovery"] = newemailrecovery
+                self.updateMail()
+                newEmail.type(newemailrecovery, press="Enter")
+                time.sleep(5)
         except Exception as e:
             print(e)
         time.sleep(1)

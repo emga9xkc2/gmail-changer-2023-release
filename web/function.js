@@ -1,5 +1,9 @@
 $(document).ready(function () {
-    loadDashboard().then(loadImport).then(loadSetting).then(loadLogs);
+    loadDashboard()
+        .then(loadImport)
+        .then(loadAccount)
+        .then(loadLogs)
+        .then(loadSetting);
     $.getScript("/codinglab.js", function () {
         // Code để gọi hàm hoặc xử lý dữ liệu tại đây
     });
@@ -68,6 +72,20 @@ function loadLogs() {
             url: "html/logs.html",
             success: function (result) {
                 $("#load-logs").html(result);
+                resolve();
+            },
+            error: function (error) {
+                reject(error);
+            },
+        });
+    });
+}
+function loadAccount() {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: "html/account.html",
+            success: function (result) {
+                $("#load-account").html(result);
                 resolve();
             },
             error: function (error) {

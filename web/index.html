@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <script src="/static/jquery-1.12.4.min.js"></script>
-    <script src="/static/myscript.js"></script>
+
     <link href="/static/toast/toastr.css" rel="stylesheet" />
     <link href="/codinglab.css" rel="stylesheet" />
     <link href="/page.css" rel="stylesheet" />
@@ -25,6 +25,7 @@
 
 
     <script type="text/javascript" src="/eel.js"></script>
+    <script src="/static/myscript.js"></script>
     <title></title>
     <style>
         body td>input {
@@ -93,6 +94,15 @@
                     <li><a class="link_name" href="#">Logs</a></li>
                 </ul>
             </li>
+            <li onclick="openMenu(event, 'account');" class="tablink">
+                <a href="#">
+                    <i class='bx bxs-user-account'></i>
+                    <span class="link_name">Account</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="#">Account</a></li>
+                </ul>
+            </li>
             <li class="logout tablink" onclick="eel.quit()()">
                 <a href="#">
                     <i class='bx bx-log-out'></i>
@@ -116,6 +126,7 @@
         <!-- <div id="load-caidat"></div> -->
         <div id="load-setting"></div>
         <div id="load-logs"></div>
+        <div id="load-account"></div>
 
 
     </section>

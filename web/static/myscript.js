@@ -50,6 +50,16 @@ function toastInfo(x) {
     toastr.info(x);
 }
 
+function pythonToJS(x) {
+    const txtArea = document.getElementById("nhatkyhoatdong");
+    txtArea.value = x + "\r\n" + txtArea.value;
+}
+eel.expose(pythonToJS);
+eel.expose(toastError);
+eel.expose(toastSuccess);
+eel.expose(toastWarning);
+eel.expose(toastInfo);
+
 function reloadUrl() {
     location.reload();
 }

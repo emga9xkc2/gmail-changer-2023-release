@@ -131,6 +131,7 @@
     <div class="menu-item" id="selectall-item-running">Chọn tất cả mail đã chạy</div>
     <div class="menu-item" id="deselectall-item">Bỏ chọn tất cả</div>
     <div class="menu-item" id="deleteall-item">Xóa các mail đã chọn</div>
+    <div class="menu-item" id="exportall-item">Xuất các mail đã chọn</div>
     <div class="menu-item" id="runall-item">Chạy các mail đã chọn</div>
     `;
 
@@ -169,6 +170,21 @@
                                 selected = []
                             } else {
                                 alert("Xóa mail thất bại")
+                            }
+                        });
+                    });
+                    $("#exportall-item").bind("click", function () {
+                        if (selected.length == 0) {
+                            msgBox("Hãy chọn những mail cần export trước");
+                            return;
+                        }
+                        eel.exportAccounts(selected)(function (callback) {
+                            var msg = callback.msg
+                            console.log(msg)
+                            if (msg == "Success") {
+                                alert("Export mail thành công")
+                            } else {
+                                alert("Export mail thất bại")
                             }
                         });
                     });

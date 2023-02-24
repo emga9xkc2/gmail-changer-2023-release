@@ -1,0 +1,86 @@
+<div id="account" class="w3-container tabs" style="display:none">
+    <br>
+    <div class="w3-row">
+
+        <div class="w3-threequarter"><input class="w3-input w3-animate-input" type="text" id="apikeyactive"
+                placeholder="Active account"></div>
+        <button onclick="kichHoatTaiKhoan()" class="w3-button w3-green w3-right">Active account</button>
+        <br>
+        <br>
+        <br>
+    </div>
+    <div class="w3-row">
+        <div class="w3-half">
+            <input type="text" id="user" style="width: 100%; border: none;">
+        </div>
+        <br>
+        <br>
+        <div class="w3-half">
+            <input type="text" id="date" style="width: 100%; border: none;">
+        </div>
+    </div>
+    <br>
+
+    <div class="w3-row">
+        <div class="w3-half">
+            <input type="text" id="hwid" style="width: 100%; border: none;">
+        </div>
+        <br>
+        <br>
+        <!-- <div class="w3-half">
+            <input type="text" id="serial" style="width: 100%; border: none;">
+        </div> -->
+    </div>
+
+
+
+
+</div>
+
+<script>
+    $("#apikeyactive").change(function () {
+        eel.updateSetting($(this).attr("id"), $(this).val())
+        // alert($(this).val());
+    });
+
+    function kichHoatTaiKhoan() {
+        var apikeyActive = getValue("#apikeyactive")
+        eel.kichHoatTaiKhoan(apikeyActive)(function (callback) {
+            var mess = callback.mess
+            toastWarning(mess)
+            // if (mess != "success") {
+            //     setHtmlCssSelector("#saveSettingStatus", `<div class="w3-panel w3-pale-red w3-bottombar w3-border-red w3-border">
+            //         <h3>Kích hoạt tài khoản thất bại</h3>
+            //         <p>${mess}</p>
+            //     </div>`  )
+            //     return
+            // }
+            // var result = callback.result
+            // setHtmlCssSelector("#saveSettingStatus", `<div class="w3-panel w3-pale-green w3-bottombar w3-border-green w3-border">
+            //         <h3>Kích hoạt tài khoản thành công</h3>
+            //         <p>${result}</p>
+            //     </div>`)
+            console.log(callback)
+        }
+        )
+    }
+    function getKeyInfo() {
+        eel.getKeyInfo()(function (callback) {
+            data = callback.data
+            date = data.date
+            hoten = data.hoten
+            hwid = data.hwid
+            keyactive = data.serial
+            $("#hwid").val("Hwid: " + hwid)
+            // $("#serial").val("Key: " + keyactive)
+            $("#user").val("Hi " + hoten)
+            $("#date").val("Expiration date: " + date)
+            // console.log(date)
+            // console.log(hoten)
+            // console.log(data)
+        });
+    }
+    getKeyInfo()
+    setInterval(getKeyInfo, 5000);
+
+</script>
